@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Usage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .usage-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .usage-info div {
+            margin: 10px 0;
+        }
+
+        .cost-box {
+            background-color: #eef7ff;
+            border: 1px solid #00aaff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            color: #00aaff;
+            font-size: 24px;
+        }
+
+        .cost-value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        /* Billing button styling */
+        .billing-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .billing-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #555;
+        }
+
+        /* Basic responsive styling */
+        @media screen and (max-width: 768px) {
+            .usage-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>API Usage Dashboard</h1>
+
+        <div class="usage-info">
+            <div>
+                <h3>Requests:</h3>
+                <p>Total requests made to the API.</p>
+                <p id="requests-count">0</p>
+            </div>
+            <div>
+                <h3>Cost ($):</h3>
+                <div class="cost-box">
+                    <span class="cost-value" id="cost-value">$0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing Button -->
+        <a href="https://platform.openai.com/account/billing" target="_blank" class="billing-btn">View Billing</a>
+
+        <div class="footer">
+            <p>&copy; 2024 ToonCraft API. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Initial values
+        let requestsCount = 0;
+        let cost = 0.00;
+
+        // Function to update the requests count and cost
+        function updateUsage() {
+            // Increase requests count
+            requestsCount++;
+            document.getElementById('requests-count').innerText = requestsCount;
+
+            // Increase cost by $0.02
+            cost += 0.02;
+            document.getElementById('cost-value').innerText = `$${cost.toFixed(2)}`;
+        }
+
+        // Update the values every second (1000ms)
+        setInterval(updateUsage, 10000);
+    </script>
+
+</body>
+
+</html>

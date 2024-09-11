@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Comic Image Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #333;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        h1 {
+            justify-content: center;
+            color: #ff00aa;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        
+        form {
+            justify-content: center;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+
+        }
+
+        input[type="text"], select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #ff00f2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #003af8;
+        }
+
+        #comicResult {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        #comicResult img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .save-btn {
+            display: none;
+            margin-top: 10px;
+            background-color: #00ff00;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            form {
+                padding: 15px;
+            }
+
+            button {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'navbar.html' %}    
+
+
+    <h1>Comic Image Generator</h1>
+    <form method="POST" id="comicForm">
+        {% csrf_token %}
+        <input type="text" name="prompt" placeholder="Enter your comic scene here" required>
+        <select name="comic_style" required>
+            <option value="comic style">American Comic style</option>
+            <option value="manga style">Manga Comic style</option>
+            <option value="chibi style">Chibi comic style</option>
+            <option value="cartoon style">Cartoon style</option>
+            <option value="graphic novel style">Graphic Novel style</option>
+        </select>
+        <button type="submit">Generate</button>
+    </form>
+    
+    <div id="comicResult">
+        {% if image_url %}
+            <form action="{% url 'image_saving' %}" method="post">
+                {% csrf_token %}
+                <img src="{{ image_url }}" alt="Generated Comic Image">
+                <button type="submit" id="saveBtn" class="save-btn">Save Image</button>    
+            </form>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('comicForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.image_url) {
+                document.getElementById('comicResult').innerHTML = `<img src="${result.image_url}" alt="Generated Comic Image"><button id="saveBtn" class="save-btn">Save Image</button>`;
+                document.querySelector('.save-btn').style.display = 'block';
+
+                // Save Button event listener
+                document.getElementById('saveBtn').onclick = async function() {
+                    const saveResponse = await fetch('{% url "save_image" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ image_url: result.image_url })
+                    });
+                    const saveResult = await saveResponse.json();
+                    if (saveResult.success) {
+                        alert('Image saved successfully!');
+                    } else {
+                        alert('Error saving image.');
+                    }
+                };
+            } else if (result.error) {
+                alert(result.error);
+            }
+        };
+    </script>
+   
+
+</body>
+</html>

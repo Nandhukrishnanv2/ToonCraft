@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="csrf-token" content="{% csrf_token %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Comic</title>
+    <script src="https://cdn.tiny.cloud/1/s609ya3hxm2f5zyvirqw6ozew1dj0b6mt2z0d83yccq2514e/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 90%; /* Much wider */
+            max-width: 1200px; /* Limiting the width */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h4.title {
+            color: #ff5e62;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ff9966;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="file"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #ff5e62;
+            outline: none;
+            background-color: #fff;
+        }
+
+        textarea {
+            height: 500px; /* Significantly larger */
+            resize: vertical;
+        }
+
+        .btn {
+            background-color: #ff5e62;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #ff9966;
+        }
+
+        .scroll__top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ff5e62;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .scroll__top i {
+            font-size: 24px;
+        }
+
+        .scroll__top:hover {
+            background-color: #ff9966;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h4 class="title">Create Comic</h4>
+        <form action="/upload_comic" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="description">Comic Description</label>
+                <textarea id="description" name="description" placeholder="Enter comic description" required></textarea>
+            </div>
+
+            
+        </form>
+    </div>
+
+    <button class="scroll__top scroll-to-target" data-target="html">
+        <i class="fas fa-angle-up"></i>
+    </button>
+    
+<script>
+       function getCsrfToken() {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    console.log('CSRF Token:', token, 'Length:', token.length);  // Log the token and its length
+    return token;
+}
+
+
+tinymce.init({
+    selector: '#description',
+    plugins: 'lists link image preview code fullscreen',
+    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview code fullscreen',
+    menubar: 'file edit view insert format tools table',
+    height: 600,
+    width: '100%',
+    max_width: 1200,
+    branding: false,
+    content_style: 'body { font-family:Arial,sans-serif; font-size:14px }',
+    images_upload_handler: function (blobInfo, success, failure) {
+        var xhr = new XMLHttpRequest();
+        var formData = new FormData();
+
+        xhr.open('POST', '/upload_image/');
+        xhr.setRequestHeader('X-CSRFToken', getCsrfToken());  // Ensure CSRF token is passed
+
+        xhr.onload = function () {
+            var json;
+            if (xhr.status !== 200) {
+                failure('HTTP Error: ' + xhr.status);
+                return;
+            }
+            json = JSON.parse(xhr.responseText);
+            if (!json.location) {
+                failure('Invalid JSON: ' + xhr.responseText);
+                return;
+            }
+            success(json.location);  // Send image URL to TinyMCE editor
+        };
+        xhr.onerror = function () {
+            failure('Image upload failed due to an XHR error.');
+        };
+
+        formData.append('file', blobInfo.blob(), blobInfo.filename());
+        xhr.send(formData);
+    },
+    setup: function (editor) {
+        editor.on('submit', function (e) {
+            e.preventDefault();  // Prevent the form from submitting immediately
+
+            // Check if `uploadImages()` exists and returns a Promise
+            if (typeof tinymce.activeEditor.uploadImages === 'function') {
+                const uploadPromise = tinymce.activeEditor.uploadImages();
+
+                if (uploadPromise && typeof uploadPromise.then === 'function') {
+                    // If the function returns a promise, handle it
+                    uploadPromise.then(function () {
+                        document.forms[0].submit();  // Submit the form after images have been uploaded
+                    }).catch(function () {
+                        console.error('Image upload failed.');
+                    });
+                } else {
+                    console.error('uploadImages() did not return a promise.');
+                }
+            } else {
+                console.error('uploadImages() is not a function or undefined.');
+            }
+        });
+    }
+});
+
+
+    </script>
+
+</body>
+</html>

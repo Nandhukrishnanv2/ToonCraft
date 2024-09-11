@@ -1,0 +1,58 @@
+<style>
+/* Navbar Styling */
+        .navbar {
+            background-color: #343a40;
+            width: 100%;
+            
+        }
+
+        .navbar-brand {
+            color: #ff00f2 !important;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .navbar-nav a {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .navbar-nav a:hover {
+            background-color: #ff00f2;
+        }
+</style>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">ToonCraft</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"></li>
+                    <a class="nav-link" href="{% url 'platform' %}">explore</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'generate_comic_image' %}">Create Image</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}">Create Comic</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'content' %}">Upload Comic</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'gallery_user' %}">Gallery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'feedback' %}">Feedback</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout_user' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

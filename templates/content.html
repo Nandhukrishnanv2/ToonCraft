@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Comic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #ff5e62;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ff9966;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="file"]:focus,
+        select:focus {
+            border-color: #ff5e62;
+            outline: none;
+            background-color: #fff;
+        }
+
+        .btn {
+            background-color: #ff5e62;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ff9966;
+        }
+
+        .uploader {
+            padding: 8px;
+            border: 2px dashed #ff9966;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+      
+
+
+    <div class="container">
+        
+        <h1>Create Comic</h1>
+        <form action="/upload_comic" method="POST" enctype="multipart/form-data">
+            
+            <!-- Category Dropdown -->
+            <div class="form-group">
+                <label for="category">Comic Category</label>
+                <select id="category" name="category" required>
+                    <option value="" disabled selected>Select category</option>
+                    <option value="action">Action</option>
+                    <option value="comedy">Comedy</option>
+                    <option value="drama">Drama</option>
+                    <option value="fantasy">Fantasy</option>
+                    <!-- Add more categories as needed -->
+                </select>
+            </div>
+
+            <!-- Comic Name -->
+            <div class="form-group">
+                <label for="comic_name">Comic Name</label>
+                <input type="text" id="comic_name" name="comic_name" placeholder="Enter comic name" required>
+            </div>
+
+            <!-- Comic Thumbnail -->
+            <div class="form-group">
+                <label for="thumbnail">Comic Thumbnail</label>
+                <input type="file" id="thumbnail" name="thumbnail" accept="image/*" required>
+            </div>
+
+            <!-- Comic PDF -->
+            <div class="form-group">
+                <label for="pdf">Comic PDF</label>
+                <div class="uploader">
+                    <input type="file" id="pdf" name="pdf" accept="application/pdf" required>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div>
+    {% include 'footer.html' %}    
+
+</body>
+</html>

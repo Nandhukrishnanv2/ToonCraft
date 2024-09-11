@@ -1,0 +1,50 @@
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        /* Your existing styles */
+        /* Add the new styles if necessary */
+    </style>
+        {% include 'navbar.html' %}    
+
+</head>
+<body>
+
+    <div class="container-fluid tm-container-content tm-mt-60">
+        <div class="row mb-4">
+            <h2 class="col-6 tm-text-primary">
+                Comic Photos
+            </h2>
+            <div class="col-6 d-flex justify-content-end align-items-center">
+                <!-- Optional: Add a search form here -->
+            </div>
+        </div>
+        <div class="row">
+            {% for img in Images %}    
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5">
+                <figure class="effect-ming tm-video-item">
+                    <!-- Updated image source path -->
+                    <img src="{{ MEDIA_URL }}{{ img.name}}" alt="Image" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>{{ img.name }}</h2>
+                    </figcaption>                    
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">{{ img.date }}</span>
+                    <span>TAG: {{ img.tag }}</span>
+                </div>
+               
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!--footer-->
+    {% include 'footer.html' %}    
+</body>
+</html>

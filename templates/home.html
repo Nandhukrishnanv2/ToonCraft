@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ToonCraft - AI Cartoon Image Generator</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f5;
+            color: #333;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(to right, #19323f, #16222A); /* Similar gradient to Leonardo AI */
+            color: white;
+            padding: 20px;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Try Now Button */
+        .try-now-btn {
+            padding: 15px 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            background-color: #ff00f2; /* Red color pop for CTA */
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0px 10px 20px rgb(255, 0, 242);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .try-now-btn:hover {
+            background-color: #f77f00;
+            box-shadow: 0px 15px 30px rgba(247, 127, 0, 0.6);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 3rem;
+            }
+
+            .hero-section p {
+                font-size: 1.2rem;
+            }
+
+            .try-now-btn {
+                padding: 12px 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-section">
+        <div>
+            <h1>Welcome to ToonCraft</h1>
+            <p>Turn your imagination into vibrant cartoons with the power of AI. Explore limitless creativity with ToonCraft, the ultimate AI cartoon image generator.</p>
+            <a href="{% url 'login_user' %}"><button class="try-now-btn">Try Now</button></a>
+        </div>
+    </div>
+
+</body>
+</html>
